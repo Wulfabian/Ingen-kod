@@ -15,14 +15,14 @@ public class Skeppet : MonoBehaviour
     public float xStart;
     public float yStart;
     public float randomms;
+    //Använder denna boolen för att rotera mitt vanliga skepp eftersom annars åker den åt höger.
+    public bool rotateShip;
 
     // Use this for initialization
     void Start()
     {
 
         //x och y Start är random värden mellan kordinaterna som finns på bildskärmen
-
-
         xStart = Random.Range(-10f, 10f);
         yStart = Random.Range(-4f, 4f);
         //Med min "randomms" float så bestämmer jag ett random värde mellan 3 och 10 som jag sedan kommer använda
@@ -44,7 +44,20 @@ public class Skeppet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(movespeed * Time.deltaTime, 0, 0, Space.Self);
+        if(!rotateShip)
+            transform.Translate(0, movespeed * Time.deltaTime, 0, Space.Self);
+        else
+            transform.Translate(movespeed * Time.deltaTime, 0, 0, Space.Self);
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            if (!rotateShip)
+                transform.Translate(0, -movespeed / 2 * Time.deltaTime, 0, Space.Self);
+            else
+                transform.Translate(-movespeed / 2 * Time.deltaTime,0, 0, Space.Self);
+        }
+
+
         //När "D" är nertryckt så svänger den åt höger, det gör jag genom att ändra variabeln
         //"rotationspeed" till negativ och sedan så eändrar jag färgen med rend.color till blå
         if (Input.GetKey(KeyCode.D))
@@ -61,7 +74,7 @@ public class Skeppet : MonoBehaviour
         //Sålänge "S" är nertryckt så halveras skeppets hastighet
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(-movespeed / 2 * Time.deltaTime, 0, 0, Space.Self);
+            transform.Translate(0, -movespeed / 2 * Time.deltaTime, 0, Space.Self);
         }
 
 
